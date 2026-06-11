@@ -1,7 +1,7 @@
 import { Page, Locator } from '@playwright/test';
+import { BasePage } from './BasePage';
 
-export class CheckoutPage {
-  readonly page: Page;
+export class CheckoutPage extends BasePage {
   readonly checkoutButton: Locator;
   readonly firstNameInput: Locator;
   readonly lastNameInput: Locator;
@@ -12,7 +12,7 @@ export class CheckoutPage {
   readonly finishButton: Locator;
 
   constructor(page: Page) {
-    this.page = page;
+    super(page);
     this.checkoutButton = page.locator('[data-test="checkout"]');
     this.firstNameInput = page.locator('[data-test="firstName"]');
     this.lastNameInput = page.locator('[data-test="lastName"]');
@@ -24,25 +24,25 @@ export class CheckoutPage {
   }
 
   async clickCheckout() {
-    await this.checkoutButton.click();
+    await this.clickOn(this.checkoutButton);
   }
 
   async fillInformation(firstName: string, lastName: string, zipCode: string) {
-    await this.firstNameInput.fill(firstName);
-    await this.lastNameInput.fill(lastName);
-    await this.zipCodeInput.fill(zipCode);
-    await this.continueButton.click();
+    await this.typeTo(this.firstNameInput, firstName);
+    await this.typeTo(this.lastNameInput, lastName);
+    await this.typeTo(this.zipCodeInput, zipCode);
+    await this.clickOn(this.continueButton);
   }
 
   async getOverviewItemName(): Promise<string> {
-    return await this.overviewItemName.innerText();
+    return await this.getTextOf(this.overviewItemName);
   }
 
   async getOverviewItemPrice(): Promise<string> {
-    return await this.overviewItemPrice.innerText();
+    return await this.getTextOf(this.overviewItemPrice);
   }
 
   async clickFinish() {
-    await this.finishButton.click();
+    await this.clickOn(this.finishButton);
   }
 }

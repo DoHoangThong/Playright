@@ -1,14 +1,14 @@
 import { Page, Locator } from '@playwright/test';
+import { BasePage } from './BasePage';
 
-export class InventoryPage {
-  readonly page: Page;
+export class InventoryPage extends BasePage {
   readonly backpackAddToCartButton: Locator;
   readonly firstItemName: Locator;
   readonly firstItemPrice: Locator;
   readonly cartLink: Locator;
 
   constructor(page: Page) {
-    this.page = page;
+    super(page);
     this.backpackAddToCartButton = page.locator('[data-test="add-to-cart-sauce-labs-backpack"]');
     this.firstItemName = page.locator('[data-test="inventory-item-name"]').first();
     this.firstItemPrice = page.locator('[data-test="inventory-item-price"]').first();
@@ -16,18 +16,18 @@ export class InventoryPage {
   }
 
   async addBackpackToCart() {
-    await this.backpackAddToCartButton.click();
+    await this.clickOn(this.backpackAddToCartButton);
   }
 
   async getFirstItemName(): Promise<string> {
-    return await this.firstItemName.innerText();
+    return await this.getTextOf(this.firstItemName);
   }
 
   async getFirstItemPrice(): Promise<string> {
-    return await this.firstItemPrice.innerText();
+    return await this.getTextOf(this.firstItemPrice);
   }
 
   async goToCart() {
-    await this.cartLink.click();
+    await this.clickOn(this.cartLink);
   }
 }
